@@ -2,6 +2,15 @@ from inspect import Traceback
 from pywinauto.application import Application
 import psutil
 import time
+
+
+#IF RIOT CLIENT IS ALREADY RUNNING WHILE TRYING TO LOGIN, WE NEED TO FORCE CLOSE IT
+
+#USE ASYNC FUNCTION FOR WEB SCRAPING
+
+
+
+
 #riot.RiotClientMain.print_control_identifiers()
 #if "RiotClientServices.exe" in (i.name() for i in psutil.process_iter()):
 #    print("True")

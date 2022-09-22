@@ -1,14 +1,14 @@
 from tkinter import *
 from tkinter.ttk import Treeview
-from turtle import width
 from auto_accept import Auto
 from window_controls import WindowController
-from tkinter import messagebox
-from db_commands import insert
+from tkinter import messagebox, ttk
+from db_commands import insert, read_data, start_db
 
 
 class Gui:
     controller = Auto()
+    #Riot client path goes here
     window_controller = WindowController("D:\Riot Games\Riot Client\RiotClientServices.exe")
 
     def __init__(self, master_root) -> None:
@@ -17,29 +17,26 @@ class Gui:
         self.frame.grid()
 
         self.account_tree = Treeview(master_root, height=10)
-        self.account_tree['columns'] = ("Username","Level","Region","Winrate")
+        self.account_tree['columns'] = ("Username", "Summoner Name","Level","Region","Winrate","Rank")
         self.account_tree.column("#0", width=0, stretch=NO)
-        self.account_tree.column("Username", width=140, stretch=NO)
-        self.account_tree.column("Level", width=140, stretch=NO)
-        self.account_tree.column("Region", width=140, stretch=NO)
-        self.account_tree.column("Winrate", width=140, stretch=NO)
+        self.account_tree.column("Username", width=130, stretch=NO)
+        self.account_tree.column("Summoner Name", width=130, stretch=NO)
+        self.account_tree.column("Level", width=130, stretch=NO)
+        self.account_tree.column("Rank", width=130, stretch=NO)
+        self.account_tree.column("Region", width=130, stretch=NO)
+        self.account_tree.column("Winrate", width=130, stretch=NO)
 
         self.account_tree.bind('<ButtonRelease-1>', self.select_item)
 
-
-
-
-
-
         self.account_tree.grid(row=0, column=0, columnspan=4, padx=20, pady=20)
         self.account_tree.heading("Username", text="Username")
+        self.account_tree.heading("Summoner Name", text="Summoner Name")
         self.account_tree.heading("Level", text="Level")
+        self.account_tree.heading("Rank", text="Rank")
         self.account_tree.heading("Region", text="Region")
         self.account_tree.heading("Winrate", text="Winrate")
 
-        self.account_tree.insert('', 'end', values=('Genadoaus', '242','US','52%'))
-        self.account_tree.insert('', 'end', values=('370vmatthew', '90','EUW','50%'))
-        self.account_tree.insert('', 'end', values=('porker', '920','EUW','20%'))
+        start_db(self.account_tree)
 
         self.add_account_btn = Button(master_root, text="Add Account", command=self.test2, width=10)
         self.add_account_btn.grid(row=1, column=1)
@@ -50,34 +47,75 @@ class Gui:
         self.login_btn = Button(master_root, text="Login", command=lambda:self.window_controller.user_login("test", "test"), width=10)
         self.login_btn.grid(row=2, column=1, pady=5)
 
- 
+    #"kr", "na", "euw", "eune", "oce", "jp", "br", "las"
     def test2(self):
         top = Toplevel(self.m)
-        top.geometry("200x200")
-        entry = Entry(top, width= 25)
-        entry2 = Entry(top, width= 25)
-        enter_btn = Button(top, text="Enter", command= lambda:self.get_values(entry, entry2))
-        entry.pack()
-        entry2.pack()
-        enter_btn.pack()
+        top.geometry("210x230")
+        variable = StringVar(top)
+
+        username_label = Label(top, text="Username", font=('Arial', 9))
+        username_entry = Entry(top, width= 25)
+
+        password_label = Label(top, text="Password", font=('Arial', 9))
+        password_entry = Entry(top, width= 25)
+
+        summoner_label = Label(top, text="Summoner Name", font=('Arial', 9))
+        summoner_entry = Entry(top, width= 25)
+
+        region_label = Label(top, text="Region", font=('Arial', 9))
+        region_dropdown = ttk.Combobox(top, values=("kr", "na", "euw", "eune", "oce", "jp", "br", "las"))
+
+        enter_btn = Button(top, text="Enter", command= lambda:self.get_values(username_entry, password_entry, 
+                            summoner_entry, region_dropdown, top))
+
+        username_label.grid(row=1, padx=20)
+        username_entry.grid(row=2, padx=20)
+
+        password_label.grid(row=3)
+        password_entry.grid(row=4)
+
+        summoner_label.grid(row=5)
+        summoner_entry.grid(row=6)
+        
+        region_label.grid(row=7)
+        region_dropdown.grid(row=8)
+
+        enter_btn.grid(row=9, pady=15)
+        
 
 
-    def get_values(self, username, password):
-        accountUsername = username.get()
-        accountPassword = password.get()
+    def get_values(self, username, password, summoner, region, window):
+        account_username = username.get()
+        account_password = password.get()
+        account_summoner = summoner.get()
+        account_region = region.get()
 
-        print(accountUsername, accountPassword)
-        insert(accountUsername, accountPassword)
-        #insert(username, password)
+        insert(account_username, account_password, account_summoner, account_region)
+
+        for data in self.account_tree.get_children():
+            self.account_tree.delete(data)
+
+        for account in read_data():
+            formatted_account = list(account)
+            formatted_account.pop(6)
+            print(formatted_account)
+            
+            self.account_tree.insert(parent='', index='end', iid=formatted_account, text="", values=(formatted_account), tag="orow")
+
+        self.close_window(window)
+        
 
     def test(self):
         messagebox.showinfo("W")
-        #def popupwin(self):
-        #    top= Toplevel(win)
+
 
     def select_item(self, a):
         curItem = self.account_tree.focus()
         values = self.account_tree.item(curItem)
         print(values['values'])
         return values['values']
+
+    def close_window(self, window):
+        window.destroy()
+
 
