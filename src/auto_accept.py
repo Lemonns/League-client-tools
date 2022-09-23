@@ -47,11 +47,6 @@ class Auto:
         self.process = multiprocessing.Process(target=self.find_accept_btn, args=())
 
 
-
-
-
-
-
 #t1 = Thread(target = find_accept_btn)
 #t1.start()
 #cv2.imshow('detected', img_bgr)

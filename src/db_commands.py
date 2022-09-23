@@ -55,4 +55,18 @@ def start_db(tree):
         for account in read_data():
             tree.insert(parent='', index='end', iid=account, text="", values=(account), tag="orow")
 
-        
+def get_login_details(username: str):
+    conn = sqlite3.connect("account_data.db")
+    cursor = conn.cursor()
+
+    sq = "SELECT username, password FROM accounts WHERE username = '"+ str(username) +"'"
+    cursor.execute(sq)
+    result = cursor.fetchall()
+    return result[0]
+
+def delete(username):
+    conn = sqlite3.connect("account_data.db")
+    cursor = conn.cursor()
+    sq = "DELETE FROM accounts WHERE username = '"+ str(username) +"'"
+    cursor.execute(sq)
+    conn.commit()

@@ -3,15 +3,18 @@ from tkinter.ttk import Treeview
 from auto_accept import Auto
 from window_controls import WindowController
 from tkinter import messagebox, ttk
-from db_commands import insert, read_data, start_db
+from db_commands import insert, read_data, start_db, get_login_details, delete
 
 
 class Gui:
     controller = Auto()
-    #Riot client path goes here
     window_controller = WindowController("D:\Riot Games\Riot Client\RiotClientServices.exe")
 
     def __init__(self, master_root) -> None:
+
+        #Selected account
+        self.current_account = None
+
         self.m = master_root
         self.frame = Frame(master_root)
         self.frame.grid()
@@ -28,7 +31,7 @@ class Gui:
 
         self.account_tree.bind('<ButtonRelease-1>', self.select_item)
 
-        self.account_tree.grid(row=0, column=0, columnspan=4, padx=20, pady=20)
+        self.account_tree.grid(row=0, column=0, columnspan=8, padx=20, pady=20)
         self.account_tree.heading("Username", text="Username")
         self.account_tree.heading("Summoner Name", text="Summoner Name")
         self.account_tree.heading("Level", text="Level")
@@ -40,12 +43,16 @@ class Gui:
 
         self.add_account_btn = Button(master_root, text="Add Account", command=self.test2, width=10)
         self.add_account_btn.grid(row=1, column=1)
+
+        self.delete_btn = Button(master_root, text="Delete", width=10, command=self.delete_account)
+        self.delete_btn.grid(row=1, column=2)
+
         self.accept_btn = Button(master_root, text="Auto Accept", command=self.controller.gui_compatable, width=10)
         self.quit_btn = Button(master_root, text="Quit", command=self.controller.gui_quit, width=10)
-        self.accept_btn.grid(row=1, column=2)
-        self.quit_btn.grid(row=2, column=2, pady=5)
-        self.login_btn = Button(master_root, text="Login", command=lambda:self.window_controller.user_login("test", "test"), width=10)
-        self.login_btn.grid(row=2, column=1, pady=5)
+        self.accept_btn.grid(row=1, column=3)
+        self.quit_btn.grid(row=1, column=4, pady=5)
+        self.login_btn = Button(master_root, text="Login", command=self.login_with_info, width=10)
+        self.login_btn.grid(row=1, column=5, pady=5)
 
     #"kr", "na", "euw", "eune", "oce", "jp", "br", "las"
     def test2(self):
@@ -98,7 +105,6 @@ class Gui:
         for account in read_data():
             formatted_account = list(account)
             formatted_account.pop(6)
-            print(formatted_account)
             
             self.account_tree.insert(parent='', index='end', iid=formatted_account, text="", values=(formatted_account), tag="orow")
 
@@ -112,10 +118,39 @@ class Gui:
     def select_item(self, a):
         curItem = self.account_tree.focus()
         values = self.account_tree.item(curItem)
-        print(values['values'])
+        #print(values['values'])
         return values['values']
 
     def close_window(self, window):
         window.destroy()
 
+    def login_with_info(self):
+        #selected_item = tree.selection()[0]
+        curItem = self.account_tree.focus()
+        values = self.account_tree.item(curItem)
+        login_details = get_login_details(values['values'][0])
 
+        #print(f"User: {values['values'][0]}")
+        #print(f"Info: {login_details[0]} and {login_details[1]}")
+
+        self.window_controller.user_login(username=login_details[0], password=login_details[1])
+
+    def delete_account(self):
+        curItem = self.account_tree.focus()
+        values = self.account_tree.item(curItem)
+        user = values['values'][0]
+        
+        delete(user)
+
+        for data in self.account_tree.get_children():
+            self.account_tree.delete(data)
+
+        for account in read_data():
+            formatted_account = list(account)
+            formatted_account.pop(6)
+            self.account_tree.insert(parent='', index='end', iid=formatted_account, text="", values=(formatted_account), tag="orow")
+
+
+
+
+        
