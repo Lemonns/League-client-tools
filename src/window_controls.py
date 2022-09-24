@@ -1,15 +1,6 @@
-from inspect import Traceback
 from pywinauto.application import Application
-import psutil
 import time
-
-
-#IF RIOT CLIENT IS ALREADY RUNNING WHILE TRYING TO LOGIN, WE NEED TO FORCE CLOSE IT
-
-#USE ASYNC FUNCTION FOR WEB 
-
-
-
+import os
 
 #riot.RiotClientMain.print_control_identifiers()
 #if "RiotClientServices.exe" in (i.name() for i in psutil.process_iter()):
@@ -38,6 +29,8 @@ class WindowController:
 
         else:
             return
+
+    #write a function to close the client and restart it if it's already open        
     def user_logout(self):
         riot = Application(backend='uia').connect(title='Riot Client Main', timeout=100)
         riot.RiotClientMain["Menu"].invoke()
