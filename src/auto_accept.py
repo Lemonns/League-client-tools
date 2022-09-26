@@ -13,8 +13,9 @@ class Auto:
     def __init__(self) -> None:
         self.process = multiprocessing.Process(target=self.find_accept_btn, args=())
 
-
+    
     def find_accept_btn(self):
+        #continuously searches for accept button
         while searching:
             img_bgr = pyautogui.screenshot()
             img_bgr = cv2.cvtColor(np.array(img_bgr), cv2.COLOR_RGB2BGR)
@@ -30,7 +31,9 @@ class Auto:
 
             if loc[0].any():
                 #searching = False
-                min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+
+                #location of found button
+                min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res) 
                 print(f"Found at {max_loc}")
 
                 for pt in zip(*loc[::-1]):
@@ -38,9 +41,11 @@ class Auto:
                 pyautogui.click(max_loc[0]+2, max_loc[1])
                 time.sleep(2)
 
+    #starts process of find_accept_btn()
     def gui_compatable(self):
         self.process.start()
 
+    #ends process of find_accept_btn()
     def gui_quit(self):
         self.process.terminate()
         print("Stopped")

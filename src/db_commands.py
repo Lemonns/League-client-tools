@@ -1,7 +1,7 @@
 import sqlite3
 from web_fetcher import get_stats
 
-
+#adds data from gui inputs
 def insert(username, password, summoner, region):
     conn = sqlite3.connect("account_data.db")
     cursor = conn.cursor()
@@ -20,6 +20,7 @@ def insert(username, password, summoner, region):
     conn.commit()
 
 
+#returns all data from db
 def read_data():
     conn = sqlite3.connect("account_data.db")
     cursor = conn.cursor()
@@ -32,7 +33,8 @@ def read_data():
     return results
 
 
-
+#uses web scraping function to scrape data from 
+#op.gg
 def update_stats():
     conn = sqlite3.connect("account_data.db")
     cursor = conn.cursor()
@@ -46,6 +48,9 @@ def update_stats():
         conn.commit()
 
 
+#loads data from database on startup
+#if there isn't a db file
+#one will be created
 def start_db(tree):
         update_stats()
 
@@ -55,6 +60,7 @@ def start_db(tree):
         for account in read_data():
             tree.insert(parent='', index='end', iid=account, text="", values=(account), tag="orow")
 
+#returns username and password from database
 def get_login_details(username: str):
     conn = sqlite3.connect("account_data.db")
     cursor = conn.cursor()

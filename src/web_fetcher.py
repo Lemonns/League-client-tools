@@ -1,10 +1,9 @@
-from cgitb import text
-from urllib.request import url2pathname
 from bs4 import BeautifulSoup
 import requests
 
 HEADER={'User-Agent': 'Mozilla/5.0'}
 
+#Fetches data from op.gg
 def get_stats(name=None, region=None):
     try:
         url = f"https://{region}.op.gg/summoners/{region}/{name}"

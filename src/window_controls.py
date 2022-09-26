@@ -8,6 +8,9 @@ import os
 #else:
 #    print("False")
 
+
+#Controls automated login functionality
+#Window controller needs path of client to work
 class WindowController:
     def __init__(self, file_location: str) -> None:
         self.location = file_location
@@ -30,7 +33,7 @@ class WindowController:
         else:
             return
 
-    #write a function to close the client and restart it if it's already open        
+    #todo: write a function to close the client and restart it if it's already open        
     def user_logout(self):
         riot = Application(backend='uia').connect(title='Riot Client Main', timeout=100)
         riot.RiotClientMain["Menu"].invoke()

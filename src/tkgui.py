@@ -8,7 +8,9 @@ from db_commands import insert, read_data, start_db, get_login_details, delete
 
 class Gui:
     controller = Auto()
-    window_controller = WindowController("D:\Riot Games\Riot Client\RiotClientServices.exe")
+
+    #                                                path of riot client
+    window_controller = WindowController("D:\Riot Games\Riot Client\RiotClientServices.exe") 
 
     def __init__(self, master_root) -> None:
 
@@ -41,7 +43,7 @@ class Gui:
 
         start_db(self.account_tree)
 
-        self.add_account_btn = Button(master_root, text="Add Account", command=self.test2, width=10)
+        self.add_account_btn = Button(master_root, text="Add Account", command=self.account_modal, width=10)
         self.add_account_btn.grid(row=1, column=1)
 
         self.delete_btn = Button(master_root, text="Delete", width=10, command=self.delete_account)
@@ -54,8 +56,9 @@ class Gui:
         self.login_btn = Button(master_root, text="Login", command=self.login_with_info, width=10)
         self.login_btn.grid(row=1, column=5, pady=5)
 
-    #"kr", "na", "euw", "eune", "oce", "jp", "br", "las"
-    def test2(self):
+    
+    #creates modal for user to input account details
+    def account_modal(self):
         top = Toplevel(self.m)
         top.geometry("210x230")
         variable = StringVar(top)
@@ -90,7 +93,7 @@ class Gui:
         enter_btn.grid(row=9, pady=15)
         
 
-
+    #retrieves data from account input modal
     def get_values(self, username, password, summoner, region, window):
         account_username = username.get()
         account_password = password.get()
@@ -110,28 +113,20 @@ class Gui:
 
         self.close_window(window)
         
-
-    def test(self):
-        messagebox.showinfo("W")
-
-
+    #returns whatever table row user clicks and returns the values
     def select_item(self, a):
         curItem = self.account_tree.focus()
         values = self.account_tree.item(curItem)
-        #print(values['values'])
         return values['values']
 
     def close_window(self, window):
         window.destroy()
 
+    #gets username and password from db and invokes automatic login
     def login_with_info(self):
-        #selected_item = tree.selection()[0]
         curItem = self.account_tree.focus()
         values = self.account_tree.item(curItem)
         login_details = get_login_details(values['values'][0])
-
-        #print(f"User: {values['values'][0]}")
-        #print(f"Info: {login_details[0]} and {login_details[1]}")
 
         self.window_controller.user_login(username=login_details[0], password=login_details[1])
 
