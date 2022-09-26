@@ -1,5 +1,5 @@
-./__pycache__
-./template
+__pycache__/
+template/
 example.py
 account_data.db
 tempCodeRunnerFile.py
