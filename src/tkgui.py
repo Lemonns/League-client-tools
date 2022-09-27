@@ -12,7 +12,7 @@ class Gui:
     #                                                path of riot client
     window_controller = WindowController("D:\Riot Games\Riot Client\RiotClientServices.exe") 
 
-    def __init__(self, master_root) -> None:
+    def __init__(self, master_root):
 
         #Selected account
         self.current_account = None
