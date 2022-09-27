@@ -2,3 +2,4 @@ pywinauto
 bs4
 psutil
 opencv
+requests
