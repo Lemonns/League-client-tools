@@ -1,6 +1,7 @@
 # League-client-tools
 
-Features:
+
+**Features:**
 - Auto-accept
 - Auto-login
 - Stores account information
