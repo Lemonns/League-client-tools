@@ -16,7 +16,7 @@
 
 ## Notes:
 - If you want to use this program and you're not on Windows, you'll need to use the python file named "keyboard_sim.py" instead of pywinauto.
-- The biggest issue currently is that pyautogui.screenshot() only works on the primary monitor. So, if you have more than 1 monitor, make sure the client is on whiever one is set to "primary"
+- The biggest issue currently is that pyautogui.screenshot() only works on the primary monitor. So, if you have more than 1 monitor, make sure the client is on whichever one is set to "primary"
 
 ## Todo:
 1. Add GUI button to enable user to edit their file path. (to use the program, you need to go into the tkgui.py file and change the path manually)
