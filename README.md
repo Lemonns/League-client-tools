@@ -13,5 +13,11 @@
 4. Uses beautifulsoup to fetch account information from op.gg.
 5. GUI built with tkinter.
 
+
 ## Notes:
-  As of now this program only works on windows. It uses pywinauto for the auto-login feature which, hence the name, only works on windows. You could use another library pynput or something to automate keystrokes, but if you click off of the window while the client is booting up, your keystrokes would go elsewhere. Other than that, I think everything else would work pretty well. 
+- If you want to use this program and you're not on Windows, you'll need to use the python file named "keyboard_sim.py" instead of pywinauto.
+
+
+## Todo:
+1. Add GUI button to enable user to edit their file path. (to use the program, you need to go into the tkgui.py file and change the path manually
+2. Make a better gui.
