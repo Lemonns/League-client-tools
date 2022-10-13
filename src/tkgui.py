@@ -144,8 +144,3 @@ class Gui:
             formatted_account = list(account)
             formatted_account.pop(6)
             self.account_tree.insert(parent='', index='end', iid=formatted_account, text="", values=(formatted_account), tag="orow")
-
-
-
-
-        
