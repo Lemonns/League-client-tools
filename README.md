@@ -7,7 +7,7 @@
 - Provides op.gg information in GUI
 
 ## How it works:
-1. The auto-accept feature works by getting the (x, y) coordinates from opencv template matching and uses pyautogui to click at the (x, y) position.
+1. The auto-accept feature works by getting the (x, y) coordinates from opencv template matching and uses pyautogui to click at the position found by opencv.
 2. The auto-login feature uses pywinauto which interfaces with windows and enters keystrokes in control panes.
 3. Account information is stored in a local database using sqlite.
 4. Uses beautifulsoup to fetch account information from op.gg.
